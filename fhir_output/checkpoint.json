@@ -1,1 +1,1 @@
-{"completed":["Condition?patient=PAT-1cd821a6f94aa7e10f01","Patient?_id=PAT-1cd821a6f94aa7e10f01"],"endpoint":"http://hapi.fhir.org/baseR4/"}
+{"completed":["Condition?patient=PAT-1cd821a6f94aa7e10f01","Patient?_id=PAT-1cd821a6f94aa7e10f01","Patient?limit=100"],"endpoint":"http://hapi.fhir.org/baseR4/"}

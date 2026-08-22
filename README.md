@@ -37,6 +37,8 @@ Compose starts `db` for the persistent volume, runs `etl` to completion, then st
 ## Commands for manually retrieving data from HAPI
 
 ```bash
+export FHIR_PSEUDONYMIZATION_KEY='a-private-secret-not-stored-in-this-repository'
+
 # All Patients
 python -m fhir_retriever --all-patients --output-dir fhir_output
 
