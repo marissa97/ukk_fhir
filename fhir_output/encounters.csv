@@ -1,0 +1,7 @@
+encounter_type,encounter_id,start,end,patient_id
+ambulatory,ENC-592a9840f2ff53301e98,2024-11-15,2024-11-15,PAT-1cd821a6f94aa7e10f01
+ambulatory,ENC-08b57240ec251a94cb6e,2024-12-15,2024-12-15,PAT-1cd821a6f94aa7e10f01
+ambulatory,ENC-34f159a1425ec23fa372,2025-01-14,2025-01-14,PAT-1cd821a6f94aa7e10f01
+ambulatory,ENC-3b14ea2259fbc9272cb3,2025-02-13,2025-02-13,PAT-1cd821a6f94aa7e10f01
+ambulatory,ENC-b0f506bb0ff0aa1c8711,2025-03-15,2025-03-15,PAT-1cd821a6f94aa7e10f01
+ambulatory,ENC-f278cb3e95ae911e91b6,2025-04-14,2025-04-14,PAT-1cd821a6f94aa7e10f01

@@ -1,0 +1,97 @@
+observation_id,patient_id,encounter_id,observation_type,observation_code,observation_subtype,effective_date_time,issued,value,unit,value_code
+OBS-cc73894b14899b4eddd8,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,1742-6,Alanine Aminotransferase,2024-11-15,,3.0,U/L,U/L
+OBS-c5d2bb28ee53170653c1,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,1920-8,Aspartate Aminotransferase,2024-11-15,,307.0,U/L,U/L
+OBS-04f914c292b3c1e0f0f8,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,vital-signs,39156-5,Body Mass Index,2024-11-15,,92.3,kg/m2,kg/m2
+OBS-e09908d2654d5c74439e,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,imaging,,Controlled Attenuation Parameter (CAP),2024-11-15,,400.0,dB/m,
+OBS-2625b45d86ca5aedc7b2,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,1988-5,C-Reactive Protein,2024-11-15,,246.86,mg/L,mg/L
+OBS-a96509d560a5ab7ab6a3,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,vital-signs,8462-4,Diastolic Blood Pressure,2024-11-15,,98.99077,mmHg,mmHg
+OBS-72a0388380dd023fcf49,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,2324-2,Gamma-Glutamyl Transferase,2024-11-15,,1192.0,U/L,U/L
+OBS-8a00a4ecbab09635c4d5,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,2339-0,Fasting Glucose,2024-11-15,,626.0,mg/dL,mg/dL
+OBS-584922021201daf8ec81,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,4548-4,HbA1c,2024-11-15,,16.2,%,%
+OBS-57d8bc79e5fb3e4bca1a,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,2085-9,HDL Cholesterol,2024-11-15,,151.0,mg/dL,mg/dL
+OBS-36f0b89e46fb366fca3c,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,20448-7,Insulin,2024-11-15,,0.71,uIU/mL,uIU/mL
+OBS-0034a0eb960c04a354b3,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,2089-1,LDL Cholesterol,2024-11-15,,354.0,mg/dL,mg/dL
+OBS-decdaaa647245df8cb13,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,imaging,,Liver Stiffness Measurement (FibroScan),2024-11-15,,75.0,kPa,
+OBS-fb982b17a833e0331454,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,vital-signs,8480-6,Systolic Blood Pressure,2024-11-15,,90.941956,mmHg,mmHg
+OBS-babe902f5978096ca7ff,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,laboratory,2571-8,Triglycerides,2024-11-15,,10.0,mg/dL,mg/dL
+OBS-249d20f29596a70edc58,PAT-1cd821a6f94aa7e10f01,ENC-592a9840f2ff53301e98,vital-signs,56115-9,Waist Circumference,2024-11-15,,187.5,cm,cm
+OBS-e347f4b92e4f017643e5,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,1742-6,Alanine Aminotransferase,2024-12-15,,3.667083,U/L,U/L
+OBS-b0771ebb636e5d649b22,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,1920-8,Aspartate Aminotransferase,2024-12-15,,298.77185,U/L,U/L
+OBS-b53852e648dfaa90a6f9,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,vital-signs,39156-5,Body Mass Index,2024-12-15,,90.619225,kg/m2,kg/m2
+OBS-1c3e5a0f09937360e0e3,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,imaging,,Controlled Attenuation Parameter (CAP),2024-12-15,,398.0866,dB/m,
+OBS-fdd96a643d2df69a2d77,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,1988-5,C-Reactive Protein,2024-12-15,,239.77386,mg/L,mg/L
+OBS-37d6b13d537839d850b4,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,vital-signs,8462-4,Diastolic Blood Pressure,2024-12-15,,98.26927,mmHg,mmHg
+OBS-0a63de54d38fdcf7220c,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,2324-2,Gamma-Glutamyl Transferase,2024-12-15,,1167.3224,U/L,U/L
+OBS-6dac1fa63fddfffb4bed,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,2339-0,Fasting Glucose,2024-12-15,,610.58307,mg/dL,mg/dL
+OBS-b415d1a7ae01a1b9220c,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,4548-4,HbA1c,2024-12-15,,15.891084,%,%
+OBS-91cf4841701185c05464,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,2085-9,HDL Cholesterol,2024-12-15,,148.57486,mg/dL,mg/dL
+OBS-b14c627da11fdfe0f5ff,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,20448-7,Insulin,2024-12-15,,0.9790751,uIU/mL,uIU/mL
+OBS-aa63adcbfc142ca25ef0,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,2089-1,LDL Cholesterol,2024-12-15,,346.81122,mg/dL,mg/dL
+OBS-d468f1f00d49ba193ad3,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,imaging,,Liver Stiffness Measurement (FibroScan),2024-12-15,,73.1882,kPa,
+OBS-c3fd55f35d43d4084bf3,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,vital-signs,8480-6,Systolic Blood Pressure,2024-12-15,,91.74944,mmHg,mmHg
+OBS-fe2ec540af715344d5d6,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,laboratory,2571-8,Triglycerides,2024-12-15,,12.251917,mg/dL,mg/dL
+OBS-30fee354351c0f09abc6,PAT-1cd821a6f94aa7e10f01,ENC-08b57240ec251a94cb6e,vital-signs,56115-9,Waist Circumference,2024-12-15,,185.5944,cm,cm
+OBS-fbed9bb88b85e17fac22,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,1742-6,Alanine Aminotransferase,2025-01-14,,4.881095,U/L,U/L
+OBS-9965c97650ed1b20559f,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,1920-8,Aspartate Aminotransferase,2025-01-14,,282.7937,U/L,U/L
+OBS-fa15bd7fd9186c24eae9,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,vital-signs,39156-5,Body Mass Index,2025-01-14,,87.87486,kg/m2,kg/m2
+OBS-d920fc6e1380a8284b56,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,imaging,,Controlled Attenuation Parameter (CAP),2025-01-14,,398.1955,dB/m,
+OBS-412af39ecc6179b20c1c,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,1988-5,C-Reactive Protein,2025-01-14,,226.24664,mg/L,mg/L
+OBS-0ceb7394d0ab2cf32aaa,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,vital-signs,8462-4,Diastolic Blood Pressure,2025-01-14,,97.20115,mmHg,mmHg
+OBS-41bf123a5fb2ffa64a0b,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,2324-2,Gamma-Glutamyl Transferase,2025-01-14,,1102.8273,U/L,U/L
+OBS-b5d2b8f8b66149470fdc,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,2339-0,Fasting Glucose,2025-01-14,,582.3154,mg/dL,mg/dL
+OBS-8addf236439a2e53ec58,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,4548-4,HbA1c,2025-01-14,,15.379419,%,%
+OBS-092df7b9e4fa6105ca24,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,2085-9,HDL Cholesterol,2025-01-14,,141.94083,mg/dL,mg/dL
+OBS-df8a20249f25f1510e5b,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,20448-7,Insulin,2025-01-14,,2.819243,uIU/mL,uIU/mL
+OBS-b549a9aa8abf16f3b07b,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,2089-1,LDL Cholesterol,2025-01-14,,331.51584,mg/dL,mg/dL
+OBS-e57ba38f26ed21b83932,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,imaging,,Liver Stiffness Measurement (FibroScan),2025-01-14,,70.32164,kPa,
+OBS-f6f886fa2fbdbbba51f0,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,vital-signs,8480-6,Systolic Blood Pressure,2025-01-14,,93.01567,mmHg,mmHg
+OBS-ed021acb64df46d5a91d,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,laboratory,2571-8,Triglycerides,2025-01-14,,22.28798,mg/dL,mg/dL
+OBS-0a9cfedb801e98e52743,PAT-1cd821a6f94aa7e10f01,ENC-34f159a1425ec23fa372,vital-signs,56115-9,Waist Circumference,2025-01-14,,182.68668,cm,cm
+OBS-9ff63867fe446d856f8d,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,1742-6,Alanine Aminotransferase,2025-02-13,,6.2372694,U/L,U/L
+OBS-fae70154bda0bd38991d,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,1920-8,Aspartate Aminotransferase,2025-02-13,,260.93576,U/L,U/L
+OBS-46138d332089b50e5120,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,vital-signs,39156-5,Body Mass Index,2025-02-13,,83.2411,kg/m2,kg/m2
+OBS-0c8d08e91809b487ca51,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,imaging,,Controlled Attenuation Parameter (CAP),2025-02-13,,393.46744,dB/m,
+OBS-6be8df1dc47e443d9e3e,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,1988-5,C-Reactive Protein,2025-02-13,,207.4233,mg/L,mg/L
+OBS-fdc305aad77eb97672ac,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,vital-signs,8462-4,Diastolic Blood Pressure,2025-02-13,,95.669785,mmHg,mmHg
+OBS-4a6896fb1c8ba3a8f5f7,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,2324-2,Gamma-Glutamyl Transferase,2025-02-13,,1013.5738,U/L,U/L
+OBS-3860581e734514eaab51,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,2339-0,Fasting Glucose,2025-02-13,,542.57684,mg/dL,mg/dL
+OBS-6ed429cb213e00480549,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,4548-4,HbA1c,2025-02-13,,14.548207,%,%
+OBS-0a20f54bc533a95e46f1,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,2085-9,HDL Cholesterol,2025-02-13,,133.86877,mg/dL,mg/dL
+OBS-f8564fdb036959f29abe,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,20448-7,Insulin,2025-02-13,,3.4259248,uIU/mL,uIU/mL
+OBS-2f0c6310ee9758a47f99,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,2089-1,LDL Cholesterol,2025-02-13,,312.45776,mg/dL,mg/dL
+OBS-29e3062a4b3708ddfe48,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,imaging,,Liver Stiffness Measurement (FibroScan),2025-02-13,,65.15704,kPa,
+OBS-008fdb0d62898f16ea06,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,vital-signs,8480-6,Systolic Blood Pressure,2025-02-13,,95.11774,mmHg,mmHg
+OBS-4727dad0d9fb6ae92b30,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,laboratory,2571-8,Triglycerides,2025-02-13,,27.816704,mg/dL,mg/dL
+OBS-70a4b41b0e40eaeb1ed0,PAT-1cd821a6f94aa7e10f01,ENC-3b14ea2259fbc9272cb3,vital-signs,56115-9,Waist Circumference,2025-02-13,,177.19101,cm,cm
+OBS-68221fce4ab0ff7d0b6e,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,1742-6,Alanine Aminotransferase,2025-03-15,,7.537961,U/L,U/L
+OBS-dbc1f0ce308bed89b000,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,1920-8,Aspartate Aminotransferase,2025-03-15,,234.07257,U/L,U/L
+OBS-d91d909ae511ae8c0d6a,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,vital-signs,39156-5,Body Mass Index,2025-03-15,,78.34372,kg/m2,kg/m2
+OBS-1a7165fba7a03ce22874,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,imaging,,Controlled Attenuation Parameter (CAP),2025-03-15,,367.9126,dB/m,
+OBS-43c523af9202b2a13606,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,1988-5,C-Reactive Protein,2025-03-15,,186.12346,mg/L,mg/L
+OBS-bd663cd0d65045cadf85,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,vital-signs,8462-4,Diastolic Blood Pressure,2025-03-15,,94.711105,mmHg,mmHg
+OBS-170a1999c220f26c1179,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,2324-2,Gamma-Glutamyl Transferase,2025-03-15,,903.8176,U/L,U/L
+OBS-2bd1c4d3e11bb5c45cab,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,2339-0,Fasting Glucose,2025-03-15,,493.30615,mg/dL,mg/dL
+OBS-44f6c9da0b27c70de9fe,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,4548-4,HbA1c,2025-03-15,,13.558739,%,%
+OBS-476fffd8c2366f9c18fa,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,2085-9,HDL Cholesterol,2025-03-15,,125.36883,mg/dL,mg/dL
+OBS-3f61f2a41db1154afac8,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,20448-7,Insulin,2025-03-15,,4.156186,uIU/mL,uIU/mL
+OBS-90d2a3595c50c83eb9b3,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,2089-1,LDL Cholesterol,2025-03-15,,289.51764,mg/dL,mg/dL
+OBS-f46a3bdbcb5eaa47228c,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,imaging,,Liver Stiffness Measurement (FibroScan),2025-03-15,,58.659847,kPa,
+OBS-43a93066d36176f95d24,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,vital-signs,8480-6,Systolic Blood Pressure,2025-03-15,,100.91003,mmHg,mmHg
+OBS-fc3d03b4dd088a94fe8f,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,laboratory,2571-8,Triglycerides,2025-03-15,,34.471615,mg/dL,mg/dL
+OBS-56a04567f6d19c17c74c,PAT-1cd821a6f94aa7e10f01,ENC-b0f506bb0ff0aa1c8711,vital-signs,56115-9,Waist Circumference,2025-03-15,,170.44716,cm,cm
+OBS-43c45fcbc7f3a22ce28f,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,1742-6,Alanine Aminotransferase,2025-04-14,,8.554706,U/L,U/L
+OBS-2ed5e75fe52360ee6eeb,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,1920-8,Aspartate Aminotransferase,2025-04-14,,205.04024,U/L,U/L
+OBS-1db6c1b8b373bc4ef306,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,vital-signs,39156-5,Body Mass Index,2025-04-14,,70.48943,kg/m2,kg/m2
+OBS-35b68dbeebcc68088ec1,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,imaging,,Controlled Attenuation Parameter (CAP),2025-04-14,,339.5356,dB/m,
+OBS-fa1ca6d7c455c2ae7d7e,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,1988-5,C-Reactive Protein,2025-04-14,,161.36444,mg/L,mg/L
+OBS-c0ce9343ea43a9b3e291,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,vital-signs,8462-4,Diastolic Blood Pressure,2025-04-14,,90.185905,mmHg,mmHg
+OBS-21eb40e0fcc7619bcc49,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,2324-2,Gamma-Glutamyl Transferase,2025-04-14,,783.0925,U/L,U/L
+OBS-dcc9e392bea0ccf53dce,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,2339-0,Fasting Glucose,2025-04-14,,438.35342,mg/dL,mg/dL
+OBS-f2e44a7082a395a68aec,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,4548-4,HbA1c,2025-04-14,,12.501567,%,%
+OBS-2ea8ace2f57b8e491df7,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,2085-9,HDL Cholesterol,2025-04-14,,120.71723,mg/dL,mg/dL
+OBS-dc605c10bd9841cfde18,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,20448-7,Insulin,2025-04-14,,3.7709703,uIU/mL,uIU/mL
+OBS-0bd57082acde035e1ad9,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,2089-1,LDL Cholesterol,2025-04-14,,259.2669,mg/dL,mg/dL
+OBS-f2176f7b451be0f78400,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,imaging,,Liver Stiffness Measurement (FibroScan),2025-04-14,,59.308857,kPa,
+OBS-f708cc50b2f5df58d72e,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,vital-signs,8480-6,Systolic Blood Pressure,2025-04-14,,101.94421,mmHg,mmHg
+OBS-0aa04225a66028206986,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,laboratory,2571-8,Triglycerides,2025-04-14,,34.489334,mg/dL,mg/dL
+OBS-13ccf6c25be52cc1aeaf,PAT-1cd821a6f94aa7e10f01,ENC-f278cb3e95ae911e91b6,vital-signs,56115-9,Waist Circumference,2025-04-14,,157.68637,cm,cm

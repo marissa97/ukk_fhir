@@ -1,0 +1,860 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R] /Count 7 >>
+endobj
+3 0 obj
+<< /Length 3073 >>
+stream
+BT
+/F1 9 Tf
+42 800 Td
+(# FHIR Retriever: User and Technical Documentation) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 1. Purpose) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(This project downloads a selected FHIR R4 Patient cohort from) Tj
+0 -12 Td
+(`http://hapi.fhir.org/baseR4`, stores Patient, Condition, Observation, and Encounter) Tj
+0 -12 Td
+(data in SQLite and CSV files, and exposes the stored data through an HTTP API.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(The normal flow is:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```text) Tj
+0 -12 Td
+(FHIR endpoint -> retrieval -> pseudonymization -> SQLite/CSV -> analysis/API) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 2. Files) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(| File | Purpose |) Tj
+0 -12 Td
+(|---|---|) Tj
+0 -12 Td
+(| `fhir_retriever.py` | FHIR client, cache/checkpoint handling, database loading, CSV) Tj
+0 -12 Td
+(export, command-line interface. |) Tj
+0 -12 Td
+(| `fhir_analyse.py` | Reads numeric Observations from SQLite and calculates descriptive) Tj
+0 -12 Td
+(statistics. |) Tj
+0 -12 Td
+(| `fhir_api.py` | FastAPI HTTP service over the stored SQLite data. |) Tj
+0 -12 Td
+(| `etl.py` | Compose ETL entry point: retrieve the configured cohort, load it, then) Tj
+0 -12 Td
+(create an analysis result. |) Tj
+0 -12 Td
+(| `test_fhir_retriever.py` | Retrieval, cache, database, and resource-selection tests. |) Tj
+0 -12 Td
+(| `test_fhir_analyse.py` | Statistics and analysis-output tests. |) Tj
+0 -12 Td
+(| `test_fhir_api.py` | HTTP API smoke tests. |) Tj
+0 -12 Td
+(| `test_encounter_link_repair.py` | Migration test for legacy Encounter/Observation ID) Tj
+0 -12 Td
+(linking. |) Tj
+0 -12 Td
+(| `Dockerfile`, `docker-compose.yml`, `.env.example` | Container build, orchestration,) Tj
+0 -12 Td
+(and environment configuration. |) Tj
+0 -12 Td
+(| `generate_documentation_pdf.py` | Regenerates this PDF from) Tj
+0 -12 Td
+(`docs/TECHNICAL_USER_DOCUMENTATION.md`. |) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 3. Setup) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Install dependencies \(a virtual environment is recommended\):) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python -m venv .venv) Tj
+0 -12 Td
+(source .venv/bin/activate) Tj
+0 -12 Td
+(python -m pip install -r requirements.txt) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Set the pseudonymization key in the current shell:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(export FHIR_PSEUDONYMIZATION_KEY='replace-with-a-long-private-random-value') Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(The key is not a Patient ID. It is the secret used by HMAC-SHA256 to turn source FHIR) Tj
+0 -12 Td
+(identifiers into stable pseudonyms. The same secret must be used whenever the same) Tj
+0 -12 Td
+(dataset is updated, otherwise new pseudonyms will not match older rows, and single-) Tj
+0 -12 Td
+(Patient commands will not recognize previously cached data for that Patient.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 4. Main Commands) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Retrieve all Patients found by the Patient search:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python -m fhir_retriever --all-patients --output-dir fhir_output) Tj
+ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 3 0 R >>
+endobj
+5 0 obj
+<< /Length 3048 >>
+stream
+BT
+/F1 9 Tf
+42 800 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Retrieve only the first N Patients:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python -m fhir_retriever --all-patients --limit 100 --output-dir fhir_output) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Retrieve only one Patient by FHIR ID:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python -m fhir_retriever --patient-id sindhu-syn-000004 --output-dir fhir_output) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Retrieve one Patient plus selected related resources. `--observation`, `--encounter`,) Tj
+0 -12 Td
+(and `--condition` can be combined in any subset:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python -m fhir_retriever \\) Tj
+0 -12 Td
+(  --patient-observations-encounters sindhu-syn-000004 \\) Tj
+0 -12 Td
+(  --output-dir fhir_output \\) Tj
+0 -12 Td
+(  --condition --observation --encounter) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(The same modifiers work with `--all-patients` to fetch related resources for every) Tj
+0 -12 Td
+(Patient:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python -m fhir_retriever --all-patients --output-dir fhir_output --observation) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Use `--refresh` only when deliberately fetching again from HAPI. Without it, completed) Tj
+0 -12 Td
+(work is served from the local cache/checkpoint where possible.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Every command's JSON output includes a `patient_pseudonyms` map for any Patient ID given) Tj
+0 -12 Td
+(explicitly, so the pseudonym stored for that Patient is always visible:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```json) Tj
+0 -12 Td
+({) Tj
+0 -12 Td
+(  "resources": {"Patient": 1, "Condition": 0, "Observation": 0, "Encounter": 0},) Tj
+0 -12 Td
+(  "failures": [],) Tj
+0 -12 Td
+(  "patient_pseudonyms": {"sindhu-syn-000004": "PAT-1cd821a6f94aa7e10f01"}) Tj
+0 -12 Td
+(}) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 5. Retrieval Code Walkthrough) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(### `Pseudonymizer`) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(`Pseudonymizer` receives `FHIR_PSEUDONYMIZATION_KEY` from the environment.) Tj
+0 -12 Td
+(`identifier\(resource_type, raw_id\)` computes an HMAC-SHA256 digest over the resource) Tj
+0 -12 Td
+(type and source ID, then prefixes a shortened digest with `PAT`, `OBS`, `ENC`, or) Tj
+0 -12 Td
+(another resource prefix. The HMAC prevents someone with only the output database from) Tj
+0 -12 Td
+(reversing the pseudonym.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(`patient_offset\(patient_id\)` derives a stable integer from the same key, in the range) Tj
+0 -12 Td
+(-365 to +365 days. `shift_date\(value, offset_days\)` parses an ISO date or timestamp and) Tj
+0 -12 Td
+(applies that offset. If shifting would move a date outside the valid calendar range \(an) Tj
+0 -12 Td
+(edge case seen with a small number of public HAPI test records near year 1 or year) Tj
+0 -12 Td
+(9999\), the original value is kept unshifted instead of raising an error, so one unusual) Tj
+0 -12 Td
+(record cannot crash an entire retrieval.) Tj
+0 -12 Td
+( ) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 3849 >>
+stream
+BT
+/F1 9 Tf
+42 800 Td
+(### `FHIRRetriever.__init__`) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(The constructor validates retry, page-size, and limit settings, opens the local) Tj
+0 -12 Td
+(cache/checkpoint paths, configures the HTTP session, opens SQLite, and hydrates the) Tj
+0 -12 Td
+(database from the full local cache. No network request happens during construction.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(### `_make_session`) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(This method creates a `requests.Session` with an `HTTPAdapter` and `urllib3.Retry`) Tj
+0 -12 Td
+(policy. It retries only GET requests for transient status codes such as 429 and 503,) Tj
+0 -12 Td
+(uses exponential backoff, honors `Retry-After`, and supplies a descriptive User-Agent.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(### `_fetch_pages`) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(FHIR search results are Bundles. This loop requests one Bundle page, validates the) Tj
+0 -12 Td
+(response, persists its resources, reads the Bundle `next` link, and repeats until there) Tj
+0 -12 Td
+(is no next page or an optional resource limit is reached. A request error, invalid JSON,) Tj
+0 -12 Td
+(or invalid Bundle becomes a `RetrievalFailure`; the partial resources already persisted) Tj
+0 -12 Td
+(remain available.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(### `_pseudonymize_resource`) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(This method runs before data is persisted. It copies a FHIR resource, replaces resource) Tj
+0 -12 Td
+(IDs and references with stable pseudonyms, shifts relevant dates, and removes Patient) Tj
+0 -12 Td
+(identifiers, telecom details, addresses, contacts, and communication preferences.) Tj
+0 -12 Td
+(Patient family and given names are extracted from the FHIR `name` field into internal) Tj
+0 -12 Td
+(fields before the original `name` array is removed, so they can still be stored in the) Tj
+0 -12 Td
+(`patients` table. Observation and Encounter references are rewritten so relationships) Tj
+0 -12 Td
+(survive.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(### `_sync_single_patient_scope`) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Called whenever a command targets one specific Patient \(`--patient-id`, `--patient-) Tj
+0 -12 Td
+(observations-encounters`, and the underlying `get_patient`/`get_*_for_patient`) Tj
+0 -12 Td
+(functions\). It removes rows for any other Patient from the `patients`, `conditions`,) Tj
+0 -12 Td
+(`observations`, and `encounters` tables, then re-syncs only that Patient's cached data.) Tj
+0 -12 Td
+(This keeps single-Patient commands scoped to the requested Patient, even when the same) Tj
+0 -12 Td
+(`--output-dir` was previously used for `--all-patients` or a different Patient.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(### `_load_related`) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(This method loops over the requested Patients and resource types. It performs a separate) Tj
+0 -12 Td
+(FHIR search for each combination, for example `Observation?patient=<source-id>`. The) Tj
+0 -12 Td
+(checkpoint uses pseudonymized query identifiers, while source IDs only remain in process) Tj
+0 -12 Td
+(memory long enough to perform requests.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(### `FHIRDatabase.sync`) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(`sync` receives de-identified resources and performs SQLite inserts/upserts. Stable) Tj
+0 -12 Td
+(primary keys for Patients, Conditions, Observations, and Encounters mean a later run) Tj
+0 -12 Td
+(updates rows instead of adding duplicates, so loads are idempotent.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(### `export_csv`) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(After a retrieval operation, SQLite tables are exported to CSV, overwriting any existing) Tj
+0 -12 Td
+(files. Headers are read from `PRAGMA table_info`, so CSV column order follows the active) Tj
+0 -12 Td
+(SQLite schema. Export happens after every database sync during a run, not only once at) Tj
+0 -12 Td
+(the end.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 6. Database Schema) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```sql) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 2672 >>
+stream
+BT
+/F1 9 Tf
+42 800 Td
+(patients\(patient_id, family_name, given_name, gender, birth_date, date_shift_days\)) Tj
+0 -12 Td
+(conditions\(condition_id, clinicalStatus, verificationStatus, category, condition,) Tj
+0 -12 Td
+(           condition_code, patient_id, encounter_id, onsetDateTime, recorded_Date\)) Tj
+0 -12 Td
+(observations\(observation_id, patient_id, encounter_id, observation_type,) Tj
+0 -12 Td
+(             observation_code, observation_subtype, effective_date_time, issued,) Tj
+0 -12 Td
+(             value, unit, value_code\)) Tj
+0 -12 Td
+(encounters\(encounter_type, encounter_id, start, end, patient_id\)) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(`patients.family_name` and `patients.given_name` are populated from the FHIR) Tj
+0 -12 Td
+(`Patient.name` field. `patient_id` itself is always a pseudonym, and `birth_date` is) Tj
+0 -12 Td
+(shifted by `date_shift_days`, so names are stored alongside a de-identified identifier) Tj
+0 -12 Td
+(and date rather than the original ones.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(The intended relationships are:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```text) Tj
+0 -12 Td
+(patients.patient_id -> conditions.patient_id) Tj
+0 -12 Td
+(patients.patient_id -> observations.patient_id) Tj
+0 -12 Td
+(patients.patient_id -> encounters.patient_id) Tj
+0 -12 Td
+(encounters.encounter_id -> observations.encounter_id) Tj
+0 -12 Td
+(encounters.encounter_id -> conditions.encounter_id) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(SQLite stores ISO dates as `TEXT`; this is standard SQLite practice because it does not) Tj
+0 -12 Td
+(provide a dedicated date storage class.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 7. Manual Database Checks) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Query the database directly with Python if the `sqlite3` command-line client is not) Tj
+0 -12 Td
+(installed:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python3 -c ") Tj
+0 -12 Td
+(import sqlite3) Tj
+0 -12 Td
+(conn = sqlite3.connect\('fhir_output/fhir_resources.sqlite3'\)) Tj
+0 -12 Td
+(conn.row_factory = sqlite3.Row) Tj
+0 -12 Td
+(for row in conn.execute\('SELECT * FROM observations LIMIT 10'\):) Tj
+0 -12 Td
+(    print\(dict\(row\)\)) Tj
+0 -12 Td
+(") Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(If the `sqlite3` CLI is available:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(sqlite3 fhir_output/fhir_resources.sqlite3) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(List tables:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```sql) Tj
+0 -12 Td
+(.tables) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Inspect a schema:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```sql) Tj
+0 -12 Td
+(.schema observations) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Count resources:) Tj
+0 -12 Td
+( ) Tj
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 2568 >>
+stream
+BT
+/F1 9 Tf
+42 800 Td
+(```sql) Tj
+0 -12 Td
+(SELECT 'patients', COUNT\(*\) FROM patients) Tj
+0 -12 Td
+(UNION ALL SELECT 'conditions', COUNT\(*\) FROM conditions) Tj
+0 -12 Td
+(UNION ALL SELECT 'observations', COUNT\(*\) FROM observations) Tj
+0 -12 Td
+(UNION ALL SELECT 'encounters', COUNT\(*\) FROM encounters;) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Check Observation-to-Encounter joins:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```sql) Tj
+0 -12 Td
+(SELECT o.observation_subtype, o.value, o.unit, e.encounter_type) Tj
+0 -12 Td
+(FROM observations AS o) Tj
+0 -12 Td
+(LEFT JOIN encounters AS e ON e.encounter_id = o.encounter_id) Tj
+0 -12 Td
+(LIMIT 20;) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Check for duplicate primary IDs, confirming idempotent loads:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```sql) Tj
+0 -12 Td
+(SELECT observation_id, COUNT\(*\)) Tj
+0 -12 Td
+(FROM observations) Tj
+0 -12 Td
+(GROUP BY observation_id) Tj
+0 -12 Td
+(HAVING COUNT\(*\) > 1;) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(No rows from the final query means Observation loading is idempotent.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 8. Analysis) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Example:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python -m fhir_analyse \\) Tj
+0 -12 Td
+(  --obs-value "Alanine Aminotransferase" \\) Tj
+0 -12 Td
+(  --group-by sex \\) Tj
+0 -12 Td
+(  --output-dir fhir_output) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(`--obs-value` matches either the Observation display \(`observation_subtype`\) or code) Tj
+0 -12 Td
+(\(`observation_code`\). `--group-by` accepts `age-band`, `sex`, or `encounter-type`; the) Tj
+0 -12 Td
+(`encounter-type` grouping joins `observations.encounter_id` to) Tj
+0 -12 Td
+(`encounters.encounter_id`. The output contains count, mean, median, standard deviation,) Tj
+0 -12 Td
+(minimum, and maximum. It is printed and written to `<output-dir>/analysis.txt`.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 9. HTTP API) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Start locally after installing FastAPI:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(FHIR_DATABASE_PATH=fhir_output/fhir_resources.sqlite3 \\) Tj
+0 -12 Td
+(uvicorn fhir_api:app --host 0.0.0.0 --port 8000) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Endpoints:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```text) Tj
+0 -12 Td
+(GET /health) Tj
+0 -12 Td
+(GET /patients?limit=100&offset=0) Tj
+0 -12 Td
+(GET /patients/{patient_id}) Tj
+0 -12 Td
+(GET /observations?patient_id=PAT-...&observation_code=1742-6&encounter_id=ENC-...) Tj
+0 -12 Td
+(GET /analysis/observations?observation=1742-6&group_by=sex) Tj
+0 -12 Td
+(GET /docs) Tj
+ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 11 0 R >>
+endobj
+13 0 obj
+<< /Length 3325 >>
+stream
+BT
+/F1 9 Tf
+42 800 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(`GET /patients` fetches live from the FHIR endpoint whenever the local database has) Tj
+0 -12 Td
+(fewer Patients than `offset + limit` \(equivalent to running `fhir_retriever --all-) Tj
+0 -12 Td
+(patients --limit N`\), then serves the requested page from SQLite. Pass `refresh=true` to) Tj
+0 -12 Td
+(force a fresh fetch even when enough Patients are already cached.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Patient responses \(`/patients` and `/patients/{patient_id}`\) never include `family_name`) Tj
+0 -12 Td
+(or `given_name`, even though those columns exist in the local database; they are) Tj
+0 -12 Td
+(stripped from the API response only.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(FastAPI returns JSON and OpenAPI documentation. Invalid query bounds return 422, missing) Tj
+0 -12 Td
+(Patients return 404, and a missing/unavailable database returns 503.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 10. Testing) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Run focused tests:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python -m unittest -v test_fhir_retriever.py) Tj
+0 -12 Td
+(python -m unittest -v test_fhir_analyse.py) Tj
+0 -12 Td
+(python -m unittest -v test_fhir_api.py) Tj
+0 -12 Td
+(python -m unittest -v test_encounter_link_repair.py) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Run the full suite once the dependencies in `requirements.txt` are installed:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(python -m unittest -v) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(The retrieval tests use fake FHIR responses; they do not call HAPI. Tests validate) Tj
+0 -12 Td
+(pagination, retries, partial failures, cache-only reruns, single-Patient scoping,) Tj
+0 -12 Td
+(idempotent upserts, API status codes, CSV exports, and relationships.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 11. Deployment \(Docker or Podman\)) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(```bash) Tj
+0 -12 Td
+(cp .env.example .env) Tj
+0 -12 Td
+(# Edit .env and set FHIR_PSEUDONYMIZATION_KEY) Tj
+0 -12 Td
+(podman compose up --build) Tj
+0 -12 Td
+(# or, with Docker installed:) Tj
+0 -12 Td
+(docker compose up --build) Tj
+0 -12 Td
+(```) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Compose uses a named `fhir-data` volume, shared read-write by `etl` and `api`. `etl`) Tj
+0 -12 Td
+(retrieves the configured cohort, writes SQLite/CSV data, and exits after a successful) Tj
+0 -12 Td
+(run. `api` starts only after `etl` completes successfully and exposes port 8000.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(`.env` controls the cohort:) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(- `FHIR_COHORT_MODE=single` \(default\): loads only `FHIR_COHORT_PATIENT_ID`.) Tj
+0 -12 Td
+(- `FHIR_COHORT_MODE=all`: loads up to `FHIR_PATIENT_LIMIT` Patients \(default `10`\),) Tj
+0 -12 Td
+(useful for testing `/patients?limit=N` with more than one Patient.) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(## 12. Privacy Limits) Tj
+0 -12 Td
+( ) Tj
+0 -12 Td
+(Pseudonymization reduces exposure but is not anonymization. Patient) Tj
+0 -12 Td
+(`family_name`/`given_name` are retained in the local database and CSV exports \(though) Tj
+0 -12 Td
+(excluded from API responses\), and `patient_id`, dates, and clinical references are) Tj
+0 -12 Td
+(pseudonymized/shifted rather than removed entirely. This does not protect against a) Tj
+0 -12 Td
+(party holding the HMAC secret, external linkage attacks, or rare combinations of dates,) Tj
+ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 13 0 R >>
+endobj
+15 0 obj
+<< /Length 203 >>
+stream
+BT
+/F1 9 Tf
+42 800 Td
+(measurements, or diagnoses. Protect the secret and the local database/CSV files,) Tj
+0 -12 Td
+(restrict access, and apply a privacy review before publishing or sharing data.) Tj
+ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 15 0 R >>
+endobj
+17 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+xref
+0 18
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000155 00000 n 
+0000003280 00000 n 
+0000003407 00000 n 
+0000006507 00000 n 
+0000006634 00000 n 
+0000010535 00000 n 
+0000010662 00000 n 
+0000013386 00000 n 
+0000013514 00000 n 
+0000016135 00000 n 
+0000016264 00000 n 
+0000019642 00000 n 
+0000019771 00000 n 
+0000020026 00000 n 
+0000020155 00000 n 
+trailer
+<< /Size 18 /Root 1 0 R >>
+startxref
+20224
+%%EOF

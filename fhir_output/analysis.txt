@@ -1,0 +1,10 @@
+{
+  "unknown": {
+    "count": 6,
+    "mean": 5.6463524,
+    "median": 5.5591822,
+    "standard_deviation": 2.1859640404239404,
+    "minimum": 3.0,
+    "maximum": 8.554706
+  }
+}

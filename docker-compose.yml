@@ -1,0 +1,36 @@
+services:
+  db:
+    image: alpine:3.20
+    command: ["sh", "-c", "mkdir -p /data && tail -f /dev/null"]
+    volumes:
+      - fhir-data:/data
+
+  etl:
+    build: .
+    command: python -m etl
+    env_file: .env
+    environment:
+      FHIR_OUTPUT_DIR: /data
+    depends_on:
+      db:
+        condition: service_started
+    volumes:
+      - fhir-data:/data
+    restart: "no"
+
+  api:
+    build: .
+    command: uvicorn fhir_api:app --host 0.0.0.0 --port 8000
+    env_file: .env
+    environment:
+      FHIR_DATABASE_PATH: /data/fhir_resources.sqlite3
+    depends_on:
+      etl:
+        condition: service_completed_successfully
+    ports:
+      - "8000:8000"
+    volumes:
+      - fhir-data:/data
+
+volumes:
+  fhir-data:
