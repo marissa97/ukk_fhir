@@ -10,6 +10,7 @@ from pathlib import Path
 
 from fhir_retriever import (
     FHIRRetriever,
+    Pseudonymizer,
     get_observations_and_encounters_for_patient,
     get_observations_for_patient,
     get_encounters_for_patient,
@@ -57,6 +58,10 @@ def bundle(*resources, next_url=None):
 
 class FHIRRetrieverTests(unittest.TestCase):
     endpoint = "https://example.test/fhir"
+
+    def test_missing_pseudonymization_key_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "FHIR_PSEUDONYMIZATION_KEY"):
+            Pseudonymizer("")
 
     def response_map(self, condition_response=None):
         patient_url = f"{self.endpoint}/Patient"

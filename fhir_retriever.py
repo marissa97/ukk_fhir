@@ -19,6 +19,7 @@ from typing import Any, Iterable
 from urllib.parse import urljoin
 
 import requests
+from dotenv import load_dotenv
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
@@ -974,6 +975,7 @@ def get_related_for_patient(
 
 
 def main() -> int:
+    load_dotenv(Path(__file__).with_name(".env"))
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--endpoint", default=DEFAULT_ENDPOINT)
     parser.add_argument("--output-dir", default="fhir_output")

@@ -8,7 +8,6 @@ Retrieves Patient, Observation, and Encounter resources from the HAPI FHIR R4 en
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-export FHIR_PSEUDONYMIZATION_KEY='a-private-secret-not-stored-in-this-repository'
 ```
 
 Install Docker
@@ -16,7 +15,12 @@ Install Docker
 sudo dnf install podman podman-docker podman-compose
 ```
 
-With Docker: `cp .env.example .env && podman compose up --build`. The API is then available at `http://localhost:8000`, with OpenAPI documentation at `http://localhost:8000/docs`.
+Save the secret key for HMAC in .env or run in commandline
+```
+cp .env.example .env
+# Edit .env and set FHIR_PSEUDONYMIZATION_KEY to a private secret.
+```
+With Docker: `cp .env.example .env && podman compose up --build`. The API is then available at `http://localhost:8000`, with OpenAPI documentation at `http://localhost:8000/docs`. The retriever uses `.env` for local runs too; an exported `FHIR_PSEUDONYMIZATION_KEY` takes precedence.
 
 ## Source And Cohort
 
