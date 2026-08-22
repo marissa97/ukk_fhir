@@ -34,7 +34,7 @@ shared data volume -> FastAPI -> http://localhost:8000/docs
 
 Compose starts `db` for the persistent volume, runs `etl` to completion, then starts `api`. For a local non-Docker run, execute `python -m fhir_retriever ...` and start the API with `uvicorn fhir_api:app --port 8000`.
 
-## Commands for data retrieval from HAPI
+## Commands for manually retrieving data from HAPI
 
 ```bash
 # All Patients
