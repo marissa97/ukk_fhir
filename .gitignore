@@ -6,5 +6,6 @@ __pycache__/
 venv/
 env/
 docs/
-generate_documentation_pdf.py
+fhir_output/resources.json*
+__pycache__
 
