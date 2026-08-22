@@ -1,6 +1,6 @@
 # FHIR Resource Retriever
 
-Retrieves Patient, Observation, and Encounter resources from the HAPI FHIR R4 endpoint and writes de-identified SQLite and CSV outputs.
+Retrieves Patient, Observation, and Encounter resources from the HAPI FHIR R4 endpoint and writes de-identified SQLite and CSV outputs. The data will then be available through the provided API. 
 
 ## Setup
 
@@ -14,7 +14,6 @@ export FHIR_PSEUDONYMIZATION_KEY='a-private-secret-not-stored-in-this-repository
 Install Docker
 ```bash
 sudo dnf install podman podman-docker podman-compose
-
 ```
 
 With Docker: `cp .env.example .env && podman compose up --build`. The API is then available at `http://localhost:8000`, with OpenAPI documentation at `http://localhost:8000/docs`.
@@ -28,14 +27,14 @@ Set `FHIR_COHORT_MODE=all` in `.env` to load multiple Patients instead (capped b
 ## Architecture
 
 ```text
-HAPI FHIR R4 -> etl (retrieve + pseudonymize + load) -> shared data volume
-													 -> SQLite + CSV + analysis.txt
+HAPI FHIR R4 -> etl (retrieve + pseudonymize + load) -> shared data volume -> Save data in SQLite + CSV 
+
 shared data volume -> FastAPI -> http://localhost:8000/docs
 ```
 
 Compose starts `db` for the persistent volume, runs `etl` to completion, then starts `api`. For a local non-Docker run, execute `python -m fhir_retriever ...` and start the API with `uvicorn fhir_api:app --port 8000`.
 
-## Commands
+## Commands for data retrieval from HAPI
 
 ```bash
 # All Patients
