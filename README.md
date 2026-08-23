@@ -34,14 +34,18 @@ The source endpoint is `http://hapi.fhir.org/baseR4`, the public HAPI FHIR R4 se
 ## Architecture
 
 ```text
-HAPI FHIR R4 -> etl (retrieve + pseudonymize + load) -> shared data volume -> Save data in SQLite + CSV 
+HAPI FHIR R4 -> etl (retrieve + pseudonymize + load) -> fhir_output (SQLite + CSV)
 
-shared data volume -> FastAPI -> http://localhost:8000/docs
+fhir_output -> FastAPI -> http://localhost:8000/docs
 ```
 
 Compose starts `db` for the persistent volume, runs `etl` to completion, then starts `api`. For a local non-Docker run, execute `python -m fhir_retriever ...` and start the API with `uvicorn fhir_api:app --port 8000`.
 
 
+To get the patients from HAPI, we need to manually call following commandline:
+```
+python -m fhir_retriever --all-patients --output-dir fhir_output --limit 5 --condition --observation --encounter --refresh
+```
 
 ## Pseudonymization
 
@@ -62,11 +66,10 @@ python -m unittest -v test_fhir_retriever.py
 
 `GET /health`, `GET /patients`, `GET /patients/{patient_id}`, `GET /observations`, and `GET /analysis/observations` are available. Collection endpoints support `limit` and `offset`; Observations support `patient_id`, `observation_code`, and `encounter_id` filters.
 
-`GET /patients` fetches live from `http://hapi.fhir.org/baseR4` whenever the local database has fewer Patients than `offset + limit` (equivalent to `fhir_retriever --all-patients --limit N`), then serves the page from SQLite. Pass `refresh=true` to force a fresh fetch even if enough Patients are already cached:
+`GET /patients` serves the locally stored Patients from SQLite. If `limit` is larger than the number of stored Patients, it returns all remaining Patients without fetching additional data:
 
 ```bash
 curl 'http://localhost:8000/patients?limit=10'
-curl 'http://localhost:8000/patients?limit=10&refresh=true'
 ```
 
 Example API request after Docker starts:

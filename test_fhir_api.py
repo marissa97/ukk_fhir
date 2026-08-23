@@ -50,29 +50,12 @@ class FHIRApiTests(unittest.TestCase):
         for response in (collection_item, single_patient):
             self.assertNotIn("family_name", response)
             self.assertNotIn("given_name", response)
+            self.assertNotIn("date_shift_days", response)
         self.assertEqual(single_patient["patient_id"], "PAT-1")
 
-    def test_patients_endpoint_fetches_live_when_cache_is_short(self):
-        calls = []
-
-        def fake_get_all_patients(limit=None, **retriever_options):
-            calls.append((limit, retriever_options))
-            from dataclasses import dataclass, field
-
-            @dataclass
-            class Report:
-                resources: dict = field(default_factory=dict)
-                failures: list = field(default_factory=list)
-
-            return Report()
-
-        original = fhir_api.get_all_patients
-        fhir_api.get_all_patients = fake_get_all_patients
-        try:
-            response = self.client.get("/patients?limit=10")
-        finally:
-            fhir_api.get_all_patients = original
+    def test_patients_endpoint_returns_all_local_rows_when_limit_is_larger(self):
+        response = self.client.get("/patients?limit=10")
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(calls), 1)
-        self.assertEqual(calls[0][0], 10)
+        self.assertEqual(response.json()["total"], 1)
+        self.assertEqual(len(response.json()["items"]), 1)

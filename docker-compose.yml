@@ -3,7 +3,7 @@ services:
     image: alpine:3.20
     command: ["sh", "-c", "mkdir -p /data && tail -f /dev/null"]
     volumes:
-      - fhir-data:/data
+      - ./fhir_output:/data:z
 
   etl:
     build: .
@@ -15,7 +15,7 @@ services:
       db:
         condition: service_started
     volumes:
-      - fhir-data:/data
+      - ./fhir_output:/data:z
     restart: "no"
 
   api:
@@ -30,7 +30,4 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - fhir-data:/data
-
-volumes:
-  fhir-data:
+      - ./fhir_output:/data:z

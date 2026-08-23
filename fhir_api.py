@@ -9,7 +9,6 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Query
 
 from fhir_analyse import analyse
-from fhir_retriever import get_all_patients
 
 
 DATABASE_PATH = Path(os.environ.get("FHIR_DATABASE_PATH", "fhir_output/fhir_resources.sqlite3"))
@@ -36,9 +35,10 @@ def collection(table: str, limit: int, offset: int) -> dict:
 
 
 def _without_names(row: dict) -> dict:
-    """Drop Patient name fields from an API response."""
+    """Drop private Patient fields from an API response."""
     row.pop("family_name", None)
     row.pop("given_name", None)
+    row.pop("date_shift_days", None)
     return row
 
 
@@ -56,26 +56,7 @@ def health() -> dict:
 def patients(
     limit: int = Query(100, ge=1, le=500),
     offset: int = Query(0, ge=0),
-    refresh: bool = Query(False, description="Force a fresh fetch from the FHIR endpoint"),
 ) -> dict:
-    database = connection()
-    try:
-        current_total = database.execute("SELECT COUNT(*) FROM patients").fetchone()[0]
-    except sqlite3.OperationalError:
-        current_total = 0
-    finally:
-        database.close()
-    # Mirror `fhir_retriever --all-patients --limit N`: fetch live when the cache is short.
-    if refresh or current_total < offset + limit:
-        try:
-            get_all_patients(
-                limit=offset + limit,
-                output_dir=DATABASE_PATH.parent,
-                database_path=DATABASE_PATH,
-                refresh=refresh,
-            )
-        except ValueError as error:
-            raise HTTPException(status_code=500, detail=str(error)) from error
     result = collection("patients", limit, offset)
     result["items"] = [_without_names(item) for item in result["items"]]
     return result
