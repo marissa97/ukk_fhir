@@ -41,46 +41,7 @@ shared data volume -> FastAPI -> http://localhost:8000/docs
 
 Compose starts `db` for the persistent volume, runs `etl` to completion, then starts `api`. For a local non-Docker run, execute `python -m fhir_retriever ...` and start the API with `uvicorn fhir_api:app --port 8000`.
 
-## Commands for manually retrieving data from HAPI
 
-```bash
-export FHIR_PSEUDONYMIZATION_KEY='a-private-secret-not-stored-in-this-repository'
-
-# All Patients
-python -m fhir_retriever --all-patients --output-dir fhir_output
-
-# First 100 Patients only
-python -m fhir_retriever --all-patients --limit 100 --output-dir fhir_output
-
-# One Patient only
-python -m fhir_retriever --patient-id sindhu-syn-000004 --output-dir fhir_output
-
-# One Patient with Observations, Encounters, or both
-python -m fhir_retriever --patient-observations-encounters sindhu-syn-000004 --output-dir fhir_output --observation
-python -m fhir_retriever --patient-observations-encounters sindhu-syn-000004 --output-dir fhir_output --encounter
-python -m fhir_retriever --patient-observations-encounters sindhu-syn-000004 --output-dir fhir_output --observation --encounter
-
-# Conditions for all Patients or one Patient
-python -m fhir_retriever --all-patients --output-dir fhir_output --condition
-python -m fhir_retriever --patient-observations-encounters sindhu-syn-000004 --output-dir fhir_output --condition
-
-# Flags can be combined
-python -m fhir_retriever --patient-observations-encounters sindhu-syn-000004 --output-dir fhir_output --condition --observation --encounter
-```
-
-Add `--refresh` only when deliberately contacting the server again. Completed cache runs make no HTTP requests.
-
-## Output
-
-`fhir_output/` contains:
-
-- `fhir_resources.sqlite3`
-- `patients.csv`, `conditions.csv`, `observations.csv`, `encounters.csv`
-- `resources.json.gz` and `checkpoint.json` for restartable retrieval
-
-CSV files are fully rewritten (not appended) from the current SQLite tables each time new data is written, including after every page during a run, so they always reflect the latest database state.
-
-Persisted IDs are deterministic HMAC pseudonyms. Direct Patient identifiers are removed, and Patient dates/timestamps are shifted by a deterministic per-patient offset. The secret key is required to reproduce the same pseudonyms and must never be committed.
 
 ## Pseudonymization
 
@@ -96,19 +57,6 @@ Conditions are stored as `clinicalStatus`, `verificationStatus`, `category`, `co
 python -m unittest -v test_fhir_retriever.py
 ```
 
-## Analysis
-
-Calculate numeric Observation statistics from the local database. `--patient-id` accepts the stored pseudonym (`PAT-...`), not the original FHIR ID.
-
-```bash
-python -m fhir_analyse --patient-id PAT-... --obs-value "Alanine Aminotransferase"
-python -m fhir_analyse --obs-value 1742-6 --group-by sex
-python -m fhir_analyse --obs-value 1742-6 --group-by encounter-type
-```
-
-The output includes count, mean, median, standard deviation, minimum, and maximum for each group. It is also saved to `fhir_output/analysis.txt`; select another folder with `--output-dir`.
-
-For `--group-by encounter-type`, the analysis joins `observations.encounter_id` to `encounters.encounter_id` and uses `encounters.encounter_type` as the group.
 
 ## API
 
@@ -127,3 +75,5 @@ Example API request after Docker starts:
 curl http://localhost:8000/health
 curl 'http://localhost:8000/observations?limit=20'
 ```
+
+The output of analysis includes count, mean, median, standard deviation, minimum, and maximum for each group. 
