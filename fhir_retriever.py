@@ -227,10 +227,16 @@ class FHIRDatabase:
         )
 
     def _migrate_conditions_table(self) -> None:
-        columns = {column[1] for column in self.connection.execute("PRAGMA table_info(conditions)")}
-        if "resource_json" not in columns:
+        columns = [column[1] for column in self.connection.execute("PRAGMA table_info(conditions)")]
+        if "resource_json" not in columns and "condition_id" in columns:
             return
-        legacy_conditions = self.connection.execute("SELECT resource_json FROM conditions").fetchall()
+        if "resource_json" in columns:
+            legacy_conditions = self.connection.execute("SELECT resource_json FROM conditions").fetchall()
+        else:
+            legacy_conditions = self.connection.execute(
+                "SELECT clinicalStatus, verificationStatus, category, condition, condition_code, "
+                "patient_id, encounter_id, onsetDateTime, recorded_Date FROM conditions"
+            ).fetchall()
         self.connection.execute("PRAGMA foreign_keys = OFF")
         try:
             with self.connection:
@@ -240,12 +246,26 @@ class FHIRDatabase:
                     "condition TEXT, condition_code TEXT, patient_id TEXT REFERENCES patients(patient_id), "
                     "encounter_id TEXT, onsetDateTime TEXT, recorded_Date TEXT)"
                 )
-                for (resource_json,) in legacy_conditions:
-                    try:
-                        resource = json.loads(resource_json)
-                    except json.JSONDecodeError:
-                        continue
-                    self.connection.execute("INSERT INTO conditions VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", self._condition_columns(resource))
+                if "resource_json" in columns:
+                    for (resource_json,) in legacy_conditions:
+                        try:
+                            resource = json.loads(resource_json)
+                        except json.JSONDecodeError:
+                            continue
+                        self.connection.execute(
+                            "INSERT INTO conditions VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            self._condition_columns(resource),
+                        )
+                else:
+                    for row_number, condition in enumerate(legacy_conditions, start=1):
+                        self.connection.execute(
+                            "INSERT INTO conditions VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            (f"legacy-condition-{row_number}", *condition),
+                        )
+                self.connection.execute(
+                    "CREATE INDEX IF NOT EXISTS conditions_patient_encounter_idx "
+                    "ON conditions(patient_id, encounter_id)"
+                )
         finally:
             self.connection.execute("PRAGMA foreign_keys = ON")
 
@@ -686,6 +706,16 @@ class FHIRRetriever:
             {"endpoint": self.endpoint, "completed": sorted(self._completed)},
         )
 
+    def _reset_cache(self) -> None:
+        self._resources.clear()
+        self._raw_patient_ids.clear()
+        self._completed.clear()
+        with self.database.connection:
+            for table_name in ("conditions", "observations", "encounters", "patients"):
+                self.database.connection.execute(f"DELETE FROM {table_name}")
+        self._save_resources()
+        self._save_checkpoint()
+
     def _remember(self, resources: Iterable[dict[str, Any]], report: RetrievalReport) -> None:
         changed = False
         valid_resources = []
@@ -764,7 +794,13 @@ class FHIRRetriever:
         if patient_id is not None:
             params["_id"] = patient_id
         if query in self._completed:
-            if patient_id is None or f"Patient/{self._patient_pseudonym(patient_id)}" in self._resources:
+            enough_patients = patient_id is None and (
+                limit is None or len(self._raw_patient_ids) >= limit
+            )
+            if enough_patients or (
+                patient_id is not None
+                and f"Patient/{self._patient_pseudonym(patient_id)}" in self._resources
+            ):
                 if patient_id is not None:
                     report.patient_pseudonyms[patient_id] = self._patient_pseudonym(patient_id)
                     self._sync_single_patient_scope(patient_id)
@@ -784,7 +820,10 @@ class FHIRRetriever:
     def _patient_ids(self, patient_id: str | None) -> list[str]:
         if patient_id is not None:
             return [patient_id] if f"Patient/{self._patient_pseudonym(patient_id)}" in self._resources else []
-        return sorted(self._raw_patient_ids.values())
+        patient_ids = sorted(self._raw_patient_ids.values())
+        if self.patient_limit is not None:
+            return patient_ids[: self.patient_limit]
+        return patient_ids
 
     def _load_related(
         self, patient_ids: Iterable[str], resource_types: Iterable[str], report: RetrievalReport
@@ -806,6 +845,8 @@ class FHIRRetriever:
     def get_all_patients(self, limit: int | None = None) -> RetrievalReport:
         """Retrieve all Patient resources and store them in the local cache and database."""
         report = RetrievalReport()
+        if self.refresh:
+            self._reset_cache()
         self._load_patients(report, None, limit or self.patient_limit)
         return report
 
@@ -818,35 +859,37 @@ class FHIRRetriever:
     def get_all_observations_and_encounters(self) -> RetrievalReport:
         """Retrieve all Patients, then all of their Observation and Encounter resources."""
         report = RetrievalReport()
-        if self._load_patients(report, None):
+        if self._load_patients(report, None, self.patient_limit):
             self._load_related(self._patient_ids(None), ("Observation", "Encounter"), report)
         return report
 
     def get_all_observations(self) -> RetrievalReport:
         """Retrieve all Patients, then all of their Observation resources only."""
         report = RetrievalReport()
-        if self._load_patients(report, None):
+        if self._load_patients(report, None, self.patient_limit):
             self._load_related(self._patient_ids(None), ("Observation",), report)
         return report
 
     def get_all_encounters(self) -> RetrievalReport:
         """Retrieve all Patients, then all of their Encounter resources only."""
         report = RetrievalReport()
-        if self._load_patients(report, None):
+        if self._load_patients(report, None, self.patient_limit):
             self._load_related(self._patient_ids(None), ("Encounter",), report)
         return report
 
     def get_all_conditions(self) -> RetrievalReport:
         """Retrieve all Patients, then all of their Condition resources only."""
         report = RetrievalReport()
-        if self._load_patients(report, None):
+        if self._load_patients(report, None, self.patient_limit):
             self._load_related(self._patient_ids(None), ("Condition",), report)
         return report
 
     def get_related_for_all_patients(self, resource_types: Iterable[str]) -> RetrievalReport:
         """Retrieve all Patients and the selected related resource types."""
         report = RetrievalReport()
-        if self._load_patients(report, None):
+        if self.refresh:
+            self._reset_cache()
+        if self._load_patients(report, None, self.patient_limit):
             self._load_related(self._patient_ids(None), resource_types, report)
         return report
 

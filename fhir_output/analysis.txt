@@ -1,10 +1,10 @@
 {
-  "unknown": {
-    "count": 6,
-    "mean": 5.6463524,
-    "median": 5.5591822,
-    "standard_deviation": 2.1859640404239404,
+  "ambulatory": {
+    "count": 30,
+    "mean": 20.93315249666667,
+    "median": 19.7901145,
+    "standard_deviation": 10.638040465965767,
     "minimum": 3.0,
-    "maximum": 8.554706
+    "maximum": 39.0
   }
 }
