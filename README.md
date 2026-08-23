@@ -24,9 +24,12 @@ With Docker: `cp .env.example .env && podman compose up --build`. The API is the
 
 ## Source And Cohort
 
-The source endpoint is `http://hapi.fhir.org/baseR4`, the public HAPI FHIR R4 server. By default, Docker ETL loads only the small synthetic cohort Patient `sindhu-syn-000004` (`FHIR_COHORT_MODE=single`), because it provides Patient, Observation, and Encounter examples without downloading the whole public server.
+The source endpoint is `http://hapi.fhir.org/baseR4`, the public HAPI FHIR R4 server. The project retrieves and stores four main FHIR resources:
 
-Set `FHIR_COHORT_MODE=all` in `.env` to load multiple Patients instead (capped by `FHIR_PATIENT_LIMIT`, default `10`). This is required if you want `/patients?limit=N` to return more than one Patient. After changing `.env`, rerun `podman compose up --build` to reload the ETL.
+- Patient – Contains patient demographics such as pseudonymized ID, gender, and shifted birth date. Used to identify and group patient data.
+- Observation – Contains clinical measurements and results such as blood pressure, heart rate, or laboratory values. Used for statistical analysis.
+- Encounter – Represents a healthcare visit or interaction. Used to provide context for observations and conditions.
+- Condition – Represents a patient's diagnosis or health condition, including its status, code, and dates.
 
 ## Architecture
 
